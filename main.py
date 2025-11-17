@@ -112,9 +112,14 @@ def search_teams(q: str) -> List[TeamSummary]:
     teams = data.get("teams") or []
     results: List[TeamSummary] = []
     for t in teams:
+        id_team = t.get("idTeam")
+        name = t.get("strTeam")
+        # Filter out incomplete entries to avoid response validation errors
+        if not id_team or not name:
+            continue
         results.append(TeamSummary(
-            id=str(t.get("idTeam")),
-            name=t.get("strTeam"),
+            id=str(id_team),
+            name=name,
             badge=t.get("strTeamBadge"),
             country=t.get("strCountry"),
             league=t.get("strLeague")
